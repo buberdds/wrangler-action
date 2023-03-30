@@ -35,7 +35,7 @@ jobs:
       - run: yarn build-preview && yarn build-storybook
       - name: Deploy App to Cloudflare Workers
         id: wrangler
-        uses: buberdds/wrangler-action@1.0.2
+        uses: buberdds/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CLOUDFRONT_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFRONT_ACCOUNT_ID }}
