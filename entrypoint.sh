@@ -129,14 +129,15 @@ for SECRET in $INPUT_SECRETS; do
   fi
 done
 
+PUBLISH_LOG=".wrangler_publish_log"
 # If there's no input command then default to publish otherwise run it
 if [ -z "$INPUT_COMMAND" ]; then
   echo "::notice:: No command was provided, defaulting to 'publish'"
 
  if [ -z "$INPUT_ENVIRONMENT" ]; then
-    wrangler publish
+    wrangler publish | tee $PUBLISH_LOG
   else
-    wrangler publish --env "$INPUT_ENVIRONMENT"
+    wrangler publish --env "$INPUT_ENVIRONMENT" | tee $PUBLISH_LOG
   fi
 
 else
@@ -144,8 +145,13 @@ else
     echo "::notice::Since you have specified an environment you need to make sure to pass in '--env $INPUT_ENVIRONMENT' to your command."
   fi
 
-  execute_commands "wrangler $INPUT_COMMAND"
+  execute_commands "wrangler $INPUT_COMMAND | tee $PUBLISH_LOG"
 fi
+PUBLISH_LOG_LAST_LINE="$(cat $PUBLISH_LOG | tail -n1)" 
+PUBLISH_URL="$(echo $PUBLISH_LOG_LAST_LINE | sed -E 's/^.* Take a peek over at (.*)/\1/')"
+echo $PUBLISH_URL 
+echo "url=$PUBLISH_URL" >> $GITHUB_OUTPUT
+
 
 # If postcommands is detected as input
 if [ -n "$INPUT_POSTCOMMANDS" ]
