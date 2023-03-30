@@ -142,7 +142,7 @@ if [ -z "$INPUT_COMMAND" ]; then
   PUBLISH_LOG_LAST_LINE="$(cat $PUBLISH_LOG | tail -n1)" 
   PUBLISH_URL="$(echo $PUBLISH_LOG_LAST_LINE | sed -E 's/^.* Take a peek over at (.*)/\1/')"
   echo $PUBLISH_URL 
-  echo "url=$$PUBLISH_URL" >> $GITHUB_OUTPUT
+  echo "url=$PUBLISH_URL" >> $GITHUB_OUTPUT
 
 else
   if [ -n "$INPUT_ENVIRONMENT" ]; then
