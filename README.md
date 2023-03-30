@@ -4,7 +4,7 @@ This action extends core [Wrangler GitHub Action](https://github.com/cloudflare/
 
 ## Usage
 - add id to your Wrangler deploy task
-- grab publish URL via `steps.wrangler.outputs.url`
+- grab publish URL via `steps.<YOUR_GH_TASK_ID>.outputs.url`
 
 ### Example action with multiple deploys and comment
 
