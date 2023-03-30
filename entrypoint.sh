@@ -137,20 +137,21 @@ if [ -z "$INPUT_COMMAND" ]; then
  if [ -z "$INPUT_ENVIRONMENT" ]; then
     wrangler publish | tee $PUBLISH_LOG
   else
-    wrangler publish | tee $PUBLISH_LOG --env "$INPUT_ENVIRONMENT"
+    wrangler publish --env "$INPUT_ENVIRONMENT" | tee $PUBLISH_LOG
   fi
-  PUBLISH_LOG_LAST_LINE="$(cat $PUBLISH_LOG | tail -n1)" 
-  PUBLISH_URL="$(echo $PUBLISH_LOG_LAST_LINE | sed -E 's/^.* Take a peek over at (.*)/\1/')"
-  echo $PUBLISH_URL 
-  echo "url=$PUBLISH_URL" >> $GITHUB_OUTPUT
 
 else
   if [ -n "$INPUT_ENVIRONMENT" ]; then
     echo "::notice::Since you have specified an environment you need to make sure to pass in '--env $INPUT_ENVIRONMENT' to your command."
   fi
 
-  execute_commands "wrangler $INPUT_COMMAND"
+  execute_commands "wrangler $INPUT_COMMAND | tee $PUBLISH_LOG"
 fi
+PUBLISH_LOG_LAST_LINE="$(cat $PUBLISH_LOG | tail -n1)" 
+PUBLISH_URL="$(echo $PUBLISH_LOG_LAST_LINE | sed -E 's/^.* Take a peek over at (.*)/\1/')"
+echo $PUBLISH_URL 
+echo "url=$PUBLISH_URL" >> $GITHUB_OUTPUT
+
 
 # If postcommands is detected as input
 if [ -n "$INPUT_POSTCOMMANDS" ]
