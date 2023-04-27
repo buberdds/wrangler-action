@@ -37,16 +37,16 @@ jobs:
         id: wrangler
         uses: buberdds/wrangler-action@2.0.0
         with:
-          apiToken: ${{ secrets.CLOUDFRONT_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFRONT_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages publish "./build" --project-name=<YOUR_CLOUDFLARE_PROJECT_NAME>
 
       - name: Deploy Storybook to Cloudflare Workers
         id: wrangler-storybook
         uses: buberdds/wrangler-action@2.0.0
         with:
-          apiToken: ${{ secrets.CLOUDFRONT_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFRONT_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages publish "./storybook-static" --project-name=<YOUR_CLOUDFLARE_PROJECT_NAME>
 
       - name: Add Comment to PR
